@@ -24,7 +24,6 @@
     var left = document.getElementById("left");
     var right = document.getElementById("right");
     var navs = document.getElementById('navs').children;
-    var span = document.getElementsByTagName('span');
     var index = 1;
     var play = false;
     var timer = setInterval(next,2000)
@@ -60,14 +59,18 @@
     }
 
     box.onmouseover = function () {
-        span[0].style.opacity = 0.5;
-        span[1].style.opacity = 0.5;
         clearInterval(timer)
+        left.style.opacity = 0.5;
+        left.style.animation = 'opacity 1s';
+        right.style.opacity = 0.5;
+        right.style.animation = 'opacity 1s';
     }
     box.onmouseout = function () {
-        span[0].style.opacity = 0;
-        span[1].style.opacity = 0;
         timer = setInterval(next, 2000);
+        left.style.opacity = 0;
+        left.style.animation = 'opacity 1s';
+        right.style.opacity = 0;
+        right.style.animation = 'opacity 1s';
     }
 
     for(var i = 0;i<navs.length;i++){
@@ -92,13 +95,6 @@
             navs[index - 1].className = 'active';
         }
     }
-    function getStyle(obj, attr){
-        if(obj.currentStyle){
-            return obj.currentStyle[attr];
-        } else {
-            return getComputedStyle(obj, null)[attr];
-        }
-    }
     function animate(obj, json, callback) {
         clearInterval(obj.timer);
         obj.timer = setInterval(function () {
@@ -106,9 +102,9 @@
             for (var attr in json) {
                 var now = 0;
                 if (attr == 'opacity') {
-                    now = parseInt(getStyle(obj, attr) * 100);
+                    now = parseInt(obj.currentStyle[attr] * 100);
                 } else {
-                    now = parseInt(getStyle(obj, attr));
+                    now = parseInt(getComputedStyle(obj, null)[attr]);
                 }
                 var speed = (json[attr] - now) / 8;
                 speed = speed > 0 ? Math.ceil(speed) : Math.floor(speed);
